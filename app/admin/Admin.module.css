@@ -1,0 +1,86 @@
+/* 파일 경로: app/admin/Admin.module.css */
+
+.adminMain {
+  width: 100%;
+  max-width: 1200px; /* 관리자 페이지는 더 넓게 */
+  margin: 0 auto;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* 모바일에서 표가 넘칠 경우 스크롤 */
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.resultTable th,
+.resultTable td {
+  border: 1px solid var(--border-color);
+  padding: 0.8rem 1rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.resultTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.resultTable td {
+  font-size: 0.95rem;
+}
+
+.resultTable tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.advanced {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.basic {
+  font-weight: bold;
+  color: #555;
+}
+
+.exception {
+  font-weight: bold;
+  color: var(--danger-color);
+}
+
+/* [수정] LinkButton -> detailsButton */
+.detailsButton {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+.detailsButton:hover {
+  background-color: #005bb5;
+  text-decoration: none;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}

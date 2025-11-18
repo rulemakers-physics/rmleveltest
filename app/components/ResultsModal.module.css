@@ -1,0 +1,216 @@
+/* 1. 모달 배경 */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* 2. 모달 본문 */
+.modalContent {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  z-index: 101;
+  padding: 0; 
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. 모달 닫기 버튼 */
+.modalCloseButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #eee;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  color: #555;
+  z-index: 102;
+}
+.modalCloseButton:hover {
+  background: #ddd;
+}
+
+/* 4. 결과 페이지 스타일 */
+.resultContainer {
+  width: 100%;
+  max-width: 800px;
+  background: #ffffff;
+  border: none;
+  box-shadow: none;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.resultCard {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.studentName {
+  font-size: 1.2rem;
+  color: #555;
+}
+.assignedClass {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  border: none;
+  padding: 0;
+}
+.assignedClass span {
+  color: var(--primary-color, #0070f3);
+}
+.totalScore {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.exceptionBox {
+  background-color: #fffbe6;
+  border: 1px solid var(--warning-color, #faad14);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.exceptionBox h4 {
+  font-size: 1.2rem;
+  color: #d46b08;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.exceptionBox p {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+.scoreDetails h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.scoreSection {
+  margin-bottom: 2rem;
+}
+.scoreSection h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.scoreTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.scoreTable th,
+.scoreTable td {
+  border: 1px solid var(--border-color, #eaeaea);
+  padding: 1rem;
+}
+.scoreTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
+.scoreTable td {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color, #eaeaea);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.footerSeparator {
+  color: var(--border-color, #eaeaea);
+  font-size: 0.9rem;
+}
+.footer a, .footer button {
+  color: var(--primary-color, #0070f3);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* 5. 문항별 채점 상세표 스타일 */
+.answerSheet {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border-color, #eaeaea);
+}
+.answerSheet h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-color, #eaeaea);
+  border-radius: 8px;
+}
+.answerTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.95rem;
+  min-width: 600px; 
+}
+.answerTable th,
+.answerTable td {
+  border-bottom: 1px solid var(--border-color, #eaeaea);
+  padding: 0.8rem 0.5rem;
+  white-space: nowrap;
+}
+.answerTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+.answerTable tbody tr:last-child td {
+  border-bottom: none;
+}
+.correctRow {
+  background-color: #f6ffed;
+}
+.incorrectRow {
+  background-color: #fff1f0;
+}
+.resultCell {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.correctRow .resultCell {
+  color: #52c41a;
+}
+.incorrectRow .resultCell {
+  color: var(--danger-color, #ff4d4f);
+}

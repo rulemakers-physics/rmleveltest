@@ -1,0 +1,411 @@
+/* 파일 경로: app/Page.module.css */
+
+.testForm {
+  width: 100%;
+  max-width: 800px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nameInfoSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.nameInputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameInputGroup label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.nameInput {
+  flex-grow: 1;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.questionBlock {
+  margin-bottom: 2rem;
+}
+
+.questionItem {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.complexQuestionItem {
+  display: block; 
+}
+
+.questionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0; 
+}
+
+.qNum {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+
+.answerInputWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.answerInput {
+  width: 60px; 
+  height: 55px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+}
+.answerInput:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,112,243,0.2);
+}
+.answerInput:disabled {
+  background: #eee;
+  color: #999;
+}
+
+.optionsContainer {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem;
+  margin-top: 0.5rem; 
+  justify-content: flex-start;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  transition: background-color 0.2s;
+}
+.optionLabel:hover {
+  background-color: #f9f9f9;
+}
+.optionLabel input[type="checkbox"],
+.optionLabel input[type="radio"] { 
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.subQuestionGroup {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+.subQuestionLabel {
+  font-size: 1.1rem;
+  margin-right: 1rem;
+  font-weight: bold;
+}
+.subQuestionGroup .optionsContainer {
+  margin-top: 0.5rem;
+  display: inline-flex; 
+}
+
+.submitSection {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 2px solid var(--border-color);
+  padding-top: 2rem;
+}
+
+.adminLinkFooter {
+  text-align: right;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border-color);
+}
+.adminLinkFooter a {
+  font-size: 0.9rem;
+  color: #888;
+  text-decoration: none;
+}
+.adminLinkFooter a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.errorText {
+  color: var(--danger-color);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+
+/* ================================================================
+  모달 스타일 + 결과 페이지 스타일 (모두 여기에 추가)
+================================================================
+*/
+
+/* 1. 모달 배경 */
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 위에서부터 스크롤되도록 */
+  padding: 2rem;
+  overflow-y: auto; /* 모달 내용이 길면 스크롤 */
+}
+
+/* 2. 모달 본문 */
+.modalContent {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  z-index: 101;
+  /* 모달 내부는 패딩 0, resultContainer가 패딩을 갖도록 */
+  padding: 0; 
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. 모달 닫기 버튼 */
+.modalCloseButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #eee;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  color: #555;
+  z-index: 102;
+}
+.modalCloseButton:hover {
+  background: #ddd;
+}
+
+
+/* 4. 결과 페이지 스타일 
+  (app/results/[resultsId]/Result.module.css의 내용을 그대로 가져옴)
+*/
+.resultContainer {
+  width: 100%;
+  max-width: 800px;
+  background: #ffffff;
+  /* 모달 안에 있으므로 border, shadow 제거 */
+  border: none;
+  box-shadow: none;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.resultCard {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.studentName {
+  font-size: 1.2rem;
+  color: #555;
+}
+.assignedClass {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  border: none;
+  padding: 0;
+}
+.assignedClass span {
+  color: var(--primary-color);
+}
+.totalScore {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.exceptionBox {
+  background-color: #fffbe6;
+  border: 1px solid var(--warning-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.exceptionBox h4 {
+  font-size: 1.2rem;
+  color: #d46b08;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.exceptionBox p {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+.scoreDetails h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.scoreSection {
+  margin-bottom: 2rem;
+}
+.scoreSection h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.scoreTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.scoreTable th,
+.scoreTable td {
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+}
+.scoreTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
+.scoreTable td {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.footerSeparator {
+  color: var(--border-color);
+  font-size: 0.9rem;
+}
+.footer a, .footer button { /* button도 포함 */
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* 5. 문항별 채점 상세표 스타일 */
+.answerSheet {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border-color);
+}
+.answerSheet h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+.answerTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.95rem;
+  min-width: 600px; 
+}
+.answerTable th,
+.answerTable td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.8rem 0.5rem;
+  white-space: nowrap;
+}
+.answerTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+.answerTable tbody tr:last-child td {
+  border-bottom: none;
+}
+.correctRow {
+  background-color: #f6ffed;
+}
+.incorrectRow {
+  background-color: #fff1f0;
+}
+.resultCell {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.correctRow .resultCell {
+  color: #52c41a;
+}
+.incorrectRow .resultCell {
+  color: var(--danger-color);
+}

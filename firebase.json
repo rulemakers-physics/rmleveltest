@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "asia-east1",
+      "run": {
+        "secrets": [
+          "SLACK_WEBHOOK_URL",
+          "FIREBASE_SERVICE_ACCOUNT_JSON"
+        ]
+      }
+    }
+  }
+}
