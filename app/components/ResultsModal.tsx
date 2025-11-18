@@ -53,8 +53,14 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
     };
   });
 
+  // 3. [추가] 인쇄 버튼 클릭 시 실행될 함수
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
+    // 4. [수정] 인쇄 영역 식별을 위한 글로벌 클래스 'printable-modal-area' 추가
+    <div className={`${styles.modalBackdrop} printable-modal-area`} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.modalCloseButton} onClick={onClose}>&times;</button>
         
@@ -133,9 +139,30 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
             </div>
           </div>
           
+          {/* 5. [수정] footer 영역에 인쇄 버튼 추가 */}
+          {/* ▼▼▼▼▼ 여기만 수정 ▼▼▼▼▼ */}
           <div className={styles.footer}>
-            <button onClick={onClose} style={{backgroundColor: '#555'}}>결과 창 닫기</button>
+            <button 
+              onClick={handlePrint} 
+              style={{
+                backgroundColor: '#0070f3', // 파란색 배경
+                marginRight: '1rem',
+                color: 'white' // [수정] 글씨를 흰색으로 강제
+              }}
+            >
+              결과 인쇄/PDF 저장
+            </button>
+            <button 
+              onClick={onClose} 
+              style={{
+                backgroundColor: '#555', // 회색 배경
+                color: 'white' // [수정] 글씨를 흰색으로 강제
+              }}
+            >
+              결과 창 닫기
+            </button>
           </div>
+          {/* ▲▲▲▲▲ 여기까지 수정 ▲▲▲▲▲ */}
         </div>
       </div>
     </div>

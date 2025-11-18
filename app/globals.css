@@ -74,3 +74,24 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+/* --------------------------------- */
+/* 🖨️ [추가] 인쇄용 스타일 (파일 맨 아래에 추가) */
+/* --------------------------------- */
+@media print {
+  /* 1. body의 자식 요소 중 .printable-modal-area가 아닌 
+       모든 요소를 인쇄 시 숨깁니다. (main, form 등)
+  */
+  body > *:not(.printable-modal-area) {
+    display: none !important;
+  }
+
+  /* 2. body 자체의 여백과 배경을 제거합니다. */
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+}

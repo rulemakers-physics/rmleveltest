@@ -3,7 +3,6 @@
 import { db } from '@/lib/firebaseAdmin'; 
 import Link from 'next/link';
 import styles from './Admin.module.css'; 
-import admin from 'firebase-admin'; 
 import AdminClientPage from './AdminClientPage'; 
 
 // [수정] createdAt -> createdAtMillis, scores 추가

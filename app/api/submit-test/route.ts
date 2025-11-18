@@ -1,8 +1,7 @@
 // 파일 경로: app/api/submit-test/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebaseAdmin'; // Firebase Admin SDK
-import admin from 'firebase-admin'; // serverTimestamp 사용을 위해 import
+import { db, admin } from '@/lib/firebaseAdmin';
 import { QUESTION_METADATA, ANSWER_KEY } from '@/lib/constants'; // 문항 정보 및 정답지
 
 // 과목별 점수 집계 인터페이스
