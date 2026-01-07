@@ -1,14 +1,14 @@
 // lib/constants.ts
 
-export type Subject = 'bio' | 'earth' | 'chem' | 'phys' | 'comm'; // 'comm' (공통) 추가
+export type Subject = 'bio' | 'earth' | 'chem' | 'phys' | 'comm'; 
 export type TestType = 'middle' | 'high';
 
 export interface QuestionMetadata {
   qNum: number;
   subject: Subject;
-  level: number;       // 난이도 (1.0 ~ 5.0)
+  level: number;       
   difficulty: 'basic' | 'advanced';
-  point?: number;      // [추가] 배점 (고등 과정용)
+  point?: number;      // 고등 과정용 배점
 }
 
 export interface TestConfig {
@@ -20,7 +20,7 @@ export interface TestConfig {
   // 중등 전용 옵션
   complexOptions?: { [key: number]: string[] };
   subQuestionOptions?: { [key: number]: { label: string; options: string[] }[] };
-  // 고등 전용 등급컷 (점수 -> 등급)
+  // 고등 전용 등급컷
   gradeCutoffs?: { score: number; grade: number }[];
 }
 
@@ -48,8 +48,9 @@ const MIDDLE_ANSWERS = [
 ];
 
 // ----------------------------------------------------------------------
-// 2. 고등 과정 (25문항 - 시트 데이터 반영)
+// 2. 고등 과정 (25문항)
 // ----------------------------------------------------------------------
+// 구글 시트 데이터를 기반으로 구성 (배점 포함)
 const HIGH_SCHOOL_DATA_RAW = [
   // Page 1
   { q:1,  ans:5, pt:1.5, subj:'bio',   diff:1.0 },
@@ -61,10 +62,10 @@ const HIGH_SCHOOL_DATA_RAW = [
   { q:6,  ans:1, pt:2.0, subj:'earth', diff:2.0 },
   { q:7,  ans:5, pt:1.5, subj:'comm',  diff:1.5 },
   { q:8,  ans:1, pt:1.5, subj:'earth', diff:2.0 },
-  { q:9,  ans:5, pt:1.5, subj:'earth', diff:2.0 }, // 물리/지구 융합 -> 지구로 분류 (편의상)
+  { q:9,  ans:5, pt:1.5, subj:'earth', diff:2.0 },
   // Page 3
-  { q:10, ans:5, pt:2.0, subj:'phys',  diff:2.0 }, // 물리/화학 -> 물리
-  { q:11, ans:5, pt:1.5, subj:'chem',  diff:2.0 }, // 지구/화학 -> 화학 (표기상 뒤쪽 or 주성분)
+  { q:10, ans:5, pt:2.0, subj:'phys',  diff:2.0 },
+  { q:11, ans:5, pt:1.5, subj:'chem',  diff:2.0 },
   { q:12, ans:3, pt:2.0, subj:'comm',  diff:3.0 },
   { q:13, ans:5, pt:2.0, subj:'bio',   diff:2.5 },
   { q:14, ans:4, pt:2.0, subj:'phys',  diff:3.0 },
@@ -89,12 +90,12 @@ function createHighMetadata(): QuestionMetadata[] {
     qNum: item.q,
     subject: item.subj as Subject,
     level: item.diff,
-    difficulty: item.diff <= 2.0 ? 'basic' : 'advanced', // 2.0 이하 기본, 초과 심화 (임의 기준)
+    difficulty: item.diff <= 2.0 ? 'basic' : 'advanced',
     point: item.pt
   }));
 }
 
-// 등급컷 (점수 내림차순 정렬)
+// [수정] 요청하신 등급컷 적용 (점수 내림차순 정렬 필수)
 const HIGH_GRADE_CUTOFFS = [
   { score: 44, grade: 1 },
   { score: 40, grade: 2 },
@@ -102,7 +103,9 @@ const HIGH_GRADE_CUTOFFS = [
   { score: 25, grade: 4 },
   { score: 18, grade: 5 },
   { score: 14, grade: 6 },
-  { score: 0,  grade: 7 }, // 14점 미만 7등급 이하 처리 (예시)
+  { score: 10, grade: 7 },
+  { score: 7.5, grade: 8 },
+  { score: 0,   grade: 9 }, // 7.5점 미만 9등급
 ];
 
 // ----------------------------------------------------------------------
