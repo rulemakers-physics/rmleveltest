@@ -65,6 +65,12 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
   });
 
   const handlePrint = () => window.print();
+  // [추가] 첫 화면으로 이동 (새로고침)
+  const handleGoHome = () => {
+    if (confirm('첫 화면으로 돌아가시겠습니까? 현재 결과는 사라집니다.')) {
+      window.location.reload();
+    }
+  };
 
   return (
     <div className={`${styles.modalBackdrop} printable-modal-area`} onClick={onClose}>
@@ -146,6 +152,13 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
           
           <div className={styles.footer}>
             <button onClick={handlePrint} style={{ backgroundColor: '#0070f3', marginRight: '1rem', color: 'white' }}>결과 인쇄/PDF 저장</button>
+            {/* [추가] 첫 화면으로 버튼 */}
+            <button 
+              onClick={handleGoHome} 
+              style={{ backgroundColor: '#faad14', marginRight: '0.5rem', color: 'white' }}
+            >
+              첫 화면으로
+            </button>
             <button onClick={onClose} style={{ backgroundColor: '#555', color: 'white' }}>닫기</button>
           </div>
         </div>

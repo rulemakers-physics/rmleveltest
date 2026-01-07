@@ -423,6 +423,8 @@
   display: flex;
   gap: 2rem;
   margin-top: 2rem;
+  flex-wrap: wrap; /* 모바일 대응 */
+  justify-content: center;
 }
 
 .selectionCard {
@@ -433,9 +435,26 @@
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   text-align: center;
-  min-width: 200px;
+  min-width: 240px;
+  
+  /* [수정] 글자색 강제 지정 (글로벌 button 스타일인 white를 덮어씀) */
+  color: var(--text-color, #333); 
 }
+
+.selectionCard h2 {
+  border-bottom: none; /* h2 밑줄 제거 */
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.selectionCard p {
+  color: #666;
+  font-size: 1rem;
+}
+
 .selectionCard:hover {
+  background-color: white; /* 호버 시 배경 흰색 유지 */
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   border-color: var(--primary-color);
