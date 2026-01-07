@@ -62,10 +62,10 @@ const HIGH_SCHOOL_DATA_RAW = [
   { q:6,  ans:1, pt:2.0, subj:'earth', diff:2.0 },
   { q:7,  ans:5, pt:1.5, subj:'comm',  diff:1.5 },
   { q:8,  ans:1, pt:1.5, subj:'earth', diff:2.0 },
-  { q:9,  ans:5, pt:1.5, subj:'earth', diff:2.0 },
+  { q:9,  ans:5, pt:1.5, subj:'comm', diff:2.0 },
   // Page 3
-  { q:10, ans:5, pt:2.0, subj:'phys',  diff:2.0 },
-  { q:11, ans:5, pt:1.5, subj:'chem',  diff:2.0 },
+  { q:10, ans:5, pt:2.0, subj:'comm',  diff:2.0 },
+  { q:11, ans:5, pt:1.5, subj:'comm',  diff:2.0 },
   { q:12, ans:3, pt:2.0, subj:'comm',  diff:3.0 },
   { q:13, ans:5, pt:2.0, subj:'bio',   diff:2.5 },
   { q:14, ans:4, pt:2.0, subj:'phys',  diff:3.0 },

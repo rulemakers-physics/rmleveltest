@@ -1,0 +1,95 @@
+[debug] [2026-01-07T12:39:30.061Z] ----------------------------------------------------------------------
+[debug] [2026-01-07T12:39:30.063Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2026-01-07T12:39:30.064Z] CLI Version:   14.24.1
+[debug] [2026-01-07T12:39:30.064Z] Platform:      win32
+[debug] [2026-01-07T12:39:30.064Z] Node Version:  v24.2.0
+[debug] [2026-01-07T12:39:30.064Z] Time:          Wed Jan 07 2026 21:39:30 GMT+0900 (대한민국 표준시)
+[debug] [2026-01-07T12:39:30.064Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-07T12:39:30.189Z] Object "/hosting/frameworksBackend" in "firebase.json" has unknown property: {"additionalProperty":"run"}
+[debug] [2026-01-07T12:39:30.190Z] Field "/hosting" in "firebase.json" is possibly invalid: must be array
+[debug] [2026-01-07T12:39:30.190Z] Field "/hosting" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2026-01-07T12:39:30.192Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-07T12:39:30.192Z] > authorizing via signed-in user (physics@rulemakers.co.kr)
+[debug] [2026-01-07T12:39:30.192Z] [iam] checking project science-lvtest for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-01-07T12:39:30.193Z] Checked if tokens are valid: false, expires at: 1767772094882
+[debug] [2026-01-07T12:39:30.193Z] Checked if tokens are valid: false, expires at: 1767772094882
+[debug] [2026-01-07T12:39:30.193Z] > refreshing access token with scopes: []
+[debug] [2026-01-07T12:39:30.194Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-01-07T12:39:30.194Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-07T12:39:30.502Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-01-07T12:39:30.502Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-07T12:39:30.529Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/science-lvtest:testIamPermissions [none]
+[debug] [2026-01-07T12:39:30.529Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/science-lvtest:testIamPermissions x-goog-quota-user=projects/science-lvtest
+[debug] [2026-01-07T12:39:30.529Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/science-lvtest:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-07T12:39:30.749Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/science-lvtest:testIamPermissions 200
+[debug] [2026-01-07T12:39:30.749Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/science-lvtest:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-01-07T12:39:30.750Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:30.750Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:30.750Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/science-lvtest [none]
+[debug] [2026-01-07T12:39:31.160Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/science-lvtest 200
+[debug] [2026-01-07T12:39:31.160Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/science-lvtest {"projectId":"science-lvtest","projectNumber":"453066033476","displayName":"science-lvtest","name":"projects/science-lvtest","resources":{"hostingSite":"science-lvtest"},"state":"ACTIVE","etag":"1_bc3b49a3-f3fa-4bba-8e0b-72a2e367f951"}
+[debug] [2026-01-07T12:39:43.092Z] defaultcredentials: writing to file C:\Users\sdij\AppData\Roaming\firebase\physics_rulemakers_co.kr_application_default_credentials.json
+[debug] [2026-01-07T12:39:43.094Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:43.094Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:43.094Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites pageToken=&pageSize=10
+[debug] [2026-01-07T12:39:44.276Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites 200
+[debug] [2026-01-07T12:39:44.276Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites {"sites":[{"name":"projects/science-lvtest/sites/science-lvtest","defaultUrl":"https://science-lvtest.web.app","appId":"1:453066033476:web:f73fcf82d3149c034caf11","type":"DEFAULT_SITE"}]}
+[debug] [2026-01-07T12:39:44.276Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:44.276Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:44.277Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:453066033476:web:f73fcf82d3149c034caf11/config [none]
+[debug] [2026-01-07T12:39:45.125Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:453066033476:web:f73fcf82d3149c034caf11/config 200
+[debug] [2026-01-07T12:39:45.125Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:453066033476:web:f73fcf82d3149c034caf11/config {"projectId":"science-lvtest","appId":"1:453066033476:web:f73fcf82d3149c034caf11","storageBucket":"science-lvtest.firebasestorage.app","apiKey":"AIzaSyDC395lUVTruvpiPe3-OqUoZaiI8QyrA04","authDomain":"science-lvtest.firebaseapp.com","messagingSenderId":"453066033476","measurementId":"G-QGEXZE4BSY","projectNumber":"453066033476","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 15.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2026-01-07T12:39:49.360Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:49.361Z] Checked if tokens are valid: true, expires at: 1767793169502
+[debug] [2026-01-07T12:39:49.361Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites/science-lvtest [none]
+[debug] [2026-01-07T12:39:50.389Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites/science-lvtest 200
+[debug] [2026-01-07T12:39:50.389Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/science-lvtest/sites/science-lvtest {"name":"projects/science-lvtest/sites/science-lvtest","defaultUrl":"https://science-lvtest.web.app","appId":"1:453066033476:web:f73fcf82d3149c034caf11","type":"DEFAULT_SITE"}
+[info] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+
+[info]    ▲ Next.js 16.0.3 (Turbopack)
+
+[info]    - Environments: .env.local
+
+
+[info]    Creating an optimized production build ...
+
+[info] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+
+[info]  ✓ Compiled successfully in 2.9s
+
+[info]    Running TypeScript ...
+
+[info] Failed to compile.
+
+
+[info] ./app/admin/page.tsx:64:24
+Type error: Type 'TestResultSummary[]' is not assignable to type 'TestResultSummary[]'. Two different types with this name exist, but they are unrelated.
+  Type 'TestResultSummary' is not assignable to type 'TestResultSummary'. Two different types with this name exist, but they are unrelated.
+    Types of property 'assignedClass' are incompatible.
+      Type 'string' is not assignable to type '"기본반" | "심화반"'.
+
+  62 |     <main className={styles.adminMain}>
+  63 |       <h1>전체 응시 기록</h1>
+> 64 |       <AdminClientPage results={results} />
+     |                        ^
+  65 |       <div className={styles.footer}>
+  66 |         <Link href="/">테스트 페이지로 가기</Link>
+  67 |       </div>
+
+[info] Next.js build worker exited with code: 1 and signal: null
+
+[debug] [2026-01-07T12:40:02.955Z] Error: ENOENT: no such file or directory, open 'c:\integrated-science-test\.next\export-marker.json'
+[error] 
+[error] Error: An unexpected error has occurred.

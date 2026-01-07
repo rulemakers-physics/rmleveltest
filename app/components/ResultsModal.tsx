@@ -3,15 +3,14 @@
 import styles from './ResultsModal.module.css';
 import { TEST_DATA, TestType } from '@/lib/constants';
 
-// [수정됨] 헬퍼 함수: 답안 표시 로직 업데이트
 const formatAnswer = (ans: number | number[]): string => {
   if (Array.isArray(ans)) {
     if (ans.length === 0) return '무응답';
     if (ans.every(item => item === 0)) return '무응답';
     return `[${ans.join(', ')}]`;
   }
-  if (ans === -1) return '모름'; // -1은 '모름'으로 표시
-  if (ans === 0) return '무응답'; // 0은 '무응답'으로 표시
+  if (ans === -1) return '모름';
+  if (ans === 0) return '무응답';
   return ans.toString();
 };
 
@@ -24,7 +23,7 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
   const {
     studentName, school, grade, assignedClass, isExceptionCase,
     totalCorrect, 
-    basicCorrect, advancedCorrect, scores, 
+    basicCorrect, advancedCorrect, scores, subjectTotals, 
     totalScore, resultGrade,
     studentAnswers, testType 
   } = result;
@@ -65,10 +64,10 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
   });
 
   const handlePrint = () => window.print();
-  // [추가] 첫 화면으로 이동 (새로고침)
+
   const handleGoHome = () => {
     if (confirm('첫 화면으로 돌아가시겠습니까? 현재 결과는 사라집니다.')) {
-      window.location.reload();
+      window.location.href = '/';
     }
   };
 
@@ -102,23 +101,67 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
             </div>
           )}
 
-          {currentTestType === 'middle' && scores && (
+          {scores && (
             <div className={styles.scoreDetails}>
-              <h3>상세 점수 분석</h3>
-              <div className={styles.scoreSection}>
-                <h4>📊 기본 문항 (총 {basicCorrect} / 24)</h4>
-                <table className={styles.scoreTable}>
-                  <thead><tr><th>생명</th><th>지구</th><th>화학</th><th>물리</th></tr></thead>
-                  <tbody><tr><td>{scores.bio?.basic}</td><td>{scores.earth?.basic}</td><td>{scores.chem?.basic}</td><td>{scores.phys?.basic}</td></tr></tbody>
-                </table>
-              </div>
-              <div className={styles.scoreSection}>
-                <h4>📈 심화 문항 (총 {advancedCorrect} / 16)</h4>
-                <table className={styles.scoreTable}>
-                  <thead><tr><th>생명</th><th>지구</th><th>화학</th><th>물리</th></tr></thead>
-                  <tbody><tr><td>{scores.bio?.advanced}</td><td>{scores.earth?.advanced}</td><td>{scores.chem?.advanced}</td><td>{scores.phys?.advanced}</td></tr></tbody>
-                </table>
-              </div>
+              <h3>과목별 상세 분석</h3>
+              
+              {currentTestType === 'middle' ? (
+                <>
+                  <div className={styles.scoreSection}>
+                    <h4>📊 기본 문항 (총 {basicCorrect} / 24)</h4>
+                    <table className={styles.scoreTable}>
+                      <thead><tr><th>생명</th><th>지구</th><th>화학</th><th>물리</th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td>{scores.bio?.basic} / 6</td>
+                          <td>{scores.earth?.basic} / 6</td>
+                          <td>{scores.chem?.basic} / 6</td>
+                          <td>{scores.phys?.basic} / 6</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className={styles.scoreSection}>
+                    <h4>📈 심화 문항 (총 {advancedCorrect} / 16)</h4>
+                    <table className={styles.scoreTable}>
+                      <thead><tr><th>생명</th><th>지구</th><th>화학</th><th>물리</th></tr></thead>
+                      <tbody>
+                        <tr>
+                          <td>{scores.bio?.advanced} / 4</td>
+                          <td>{scores.earth?.advanced} / 4</td>
+                          <td>{scores.chem?.advanced} / 4</td>
+                          <td>{scores.phys?.advanced} / 4</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              ) : (
+                // --- 고등 과정 (융합 추가) ---
+                <div className={styles.scoreSection}>
+                  <table className={styles.scoreTable}>
+                    <thead>
+                      <tr>
+                        <th>물리</th>
+                        <th>화학</th>
+                        <th>지구과학</th>
+                        <th>생명과학</th>
+                        <th>융합</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{(scores.phys?.basic || 0) + (scores.phys?.advanced || 0)} / {subjectTotals?.phys || 0}</td>
+                        <td>{(scores.chem?.basic || 0) + (scores.chem?.advanced || 0)} / {subjectTotals?.chem || 0}</td>
+                        <td>{(scores.earth?.basic || 0) + (scores.earth?.advanced || 0)} / {subjectTotals?.earth || 0}</td>
+                        <td>{(scores.bio?.basic || 0) + (scores.bio?.advanced || 0)} / {subjectTotals?.bio || 0}</td>
+                        {/* [수정] 융합 데이터 표시 */}
+                        <td>{(scores.comm?.basic || 0) + (scores.comm?.advanced || 0)} / {subjectTotals?.comm || 0}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
@@ -152,7 +195,6 @@ export default function ResultModal({ result, onClose }: { result: any, onClose:
           
           <div className={styles.footer}>
             <button onClick={handlePrint} style={{ backgroundColor: '#0070f3', marginRight: '1rem', color: 'white' }}>결과 인쇄/PDF 저장</button>
-            {/* [추가] 첫 화면으로 버튼 */}
             <button 
               onClick={handleGoHome} 
               style={{ backgroundColor: '#faad14', marginRight: '0.5rem', color: 'white' }}

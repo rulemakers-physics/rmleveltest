@@ -117,11 +117,11 @@ export default function TestPage() {
         <h1>과정을 선택해주세요</h1>
         <div className={styles.cardContainer}>
           <button className={styles.selectionCard} onClick={() => handleSelectTest('middle')}>
-            <h2>중등 심화 과정</h2>
+            <h2>중등 과정</h2>
             <p>40문항 / 반 배정 테스트</p>
           </button>
           <button className={styles.selectionCard} onClick={() => handleSelectTest('high')}>
-            <h2>고등 통합 과정</h2>
+            <h2>고등 통합과학 과정</h2>
             <p>25문항 / 등급 산출 테스트</p>
           </button>
         </div>

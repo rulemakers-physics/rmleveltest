@@ -2,45 +2,52 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { db, admin } from '@/lib/firebaseAdmin';
-import { TEST_DATA, TestType } from '@/lib/constants'; // [수정] 통합 상수 사용
+import { TEST_DATA, TestType } from '@/lib/constants';
 
-// 과목별 점수 집계 인터페이스 (중등용)
 interface ScoreDetails {
   basic: number;
   advanced: number;
 }
+// [수정] Scores 인터페이스에 comm을 명시적으로 포함
 interface Scores {
   bio: ScoreDetails;
   earth: ScoreDetails;
   chem: ScoreDetails;
   phys: ScoreDetails;
+  comm: ScoreDetails; 
+  [key: string]: ScoreDetails | undefined;
+}
+
+interface SubjectCounts {
+  bio: number;
+  earth: number;
+  chem: number;
+  phys: number;
+  comm: number;
+  [key: string]: number | undefined;
 }
 
 /**
- * Slack으로 알림을 전송하는 함수
+ * Slack 알림 함수
  */
 async function sendSlackNotification(data: any) {
   const url = process.env.SLACK_WEBHOOK_URL;
-  
   if (!url) {
-    console.error("Slack Webhook URL is not set. Skipping notification.");
+    console.error("Slack Webhook URL is not set.");
     return;
   }
 
   const { 
     studentName, school, grade, testType,
-    totalCorrect, totalScore, resultGrade, // 고등용 필드
+    totalCorrect, totalScore, resultGrade,
     assignedClass, isExceptionCase, 
-    scores, basicCorrect, advancedCorrect 
+    scores, basicCorrect, advancedCorrect, subjectTotals 
   } = data;
 
   let blocks = [];
 
-  // [분기] 테스트 타입에 따라 슬랙 메시지 구성
   if (testType === 'high') {
-    // -------------------------------------------------------
-    // 1. 고등 과정 (등급 중심)
-    // -------------------------------------------------------
+    // 고등 과정: 과목별 현황 (융합 포함)
     blocks = [
       {
         type: "section",
@@ -57,17 +64,18 @@ async function sendSlackNotification(data: any) {
       { type: "divider" },
       {
         type: "section",
-        text: { type: "mrkdwn", text: `📝 *상세 결과*` },
+        text: { type: "mrkdwn", text: `📝 *과목별 정답 현황*` },
         fields: [
-          { type: "mrkdwn", text: `*총점:* ${totalScore}점 (50점 만점)` },
-          { type: "mrkdwn", text: `*예상 등급:* ${resultGrade}등급` },
+          { type: "mrkdwn", text: `*물리학:* ${(scores.phys?.basic || 0) + (scores.phys?.advanced || 0)} / ${subjectTotals?.phys || 0}` },
+          { type: "mrkdwn", text: `*화학:* ${(scores.chem?.basic || 0) + (scores.chem?.advanced || 0)} / ${subjectTotals?.chem || 0}` },
+          { type: "mrkdwn", text: `*지구과학:* ${(scores.earth?.basic || 0) + (scores.earth?.advanced || 0)} / ${subjectTotals?.earth || 0}` },
+          { type: "mrkdwn", text: `*생명과학:* ${(scores.bio?.basic || 0) + (scores.bio?.advanced || 0)} / ${subjectTotals?.bio || 0}` },
+          { type: "mrkdwn", text: `*융합:* ${(scores.comm?.basic || 0) + (scores.comm?.advanced || 0)} / ${subjectTotals?.comm || 0}` }
         ]
       }
     ];
   } else {
-    // -------------------------------------------------------
-    // 2. 중등 과정 (기존 포맷 유지 - 과목별 상세)
-    // -------------------------------------------------------
+    // 중등 과정
     blocks = [
       {
         type: "section",
@@ -76,7 +84,7 @@ async function sendSlackNotification(data: any) {
       {
         type: "section",
         fields: [
-          { type: "mrkdwn", text: `*학생:* ${studentName || '익명'} (${school || '미기입'} / ${grade || '미기입'})` },
+          { type: "mrkdwn", text: `*학생:* ${studentName} (${school} / ${grade})` },
           { type: "mrkdwn", text: `*배정반:* *${assignedClass}* ${isExceptionCase ? "🚨" : ""}` },
           { type: "mrkdwn", text: `*총점:* ${totalCorrect} / 40` }
         ]
@@ -101,13 +109,6 @@ async function sendSlackNotification(data: any) {
           { type: "mrkdwn", text: `*생명과학:* ${scores.bio.advanced} / 4` },
           { type: "mrkdwn", text: `*지구과학:* ${scores.earth.advanced} / 4` }
         ]
-      },
-      { type: "divider" },
-      {
-        type: "context",
-        elements: [
-          { type: "mrkdwn", text: `*특이사항:* ${isExceptionCase ? "🚨 [예외 케이스] 심화 정답률(60%+) 대비 기본 정답률(19 미만) 낮음. 상담 필요." : "없음"}` }
-        ]
       }
     ];
   }
@@ -128,17 +129,10 @@ async function sendSlackNotification(data: any) {
   }
 }
 
-
-/**
- * POST /api/submit-test
- */
 export async function POST(req: NextRequest) {
   try {
-    // 1. 요청 본문 파싱
     const { studentAnswers, studentName, school, grade, testType } = await req.json();
     
-    // 2. 유효성 검사
-    // testType이 없으면 기존 로직 호환을 위해 'middle'로 간주하거나 에러 처리
     const currentTestType = (testType as TestType) || 'middle';
     
     if (!TEST_DATA[currentTestType]) {
@@ -156,16 +150,22 @@ export async function POST(req: NextRequest) {
 
     // 3. 채점 및 집계
     let totalCorrect = 0;
-    let totalScore = 0; // 고등 과정용 (배점 합계)
+    let totalScore = 0;
     
-    // 중등용 통계 변수
     let basicCorrect = 0;
     let advancedCorrect = 0;
+    
+    // [중요] scores 및 subjectTotals를 모든 과목에 대해 0으로 초기화
     const scores: Scores = {
       bio: { basic: 0, advanced: 0 },
       earth: { basic: 0, advanced: 0 },
       chem: { basic: 0, advanced: 0 },
       phys: { basic: 0, advanced: 0 },
+      comm: { basic: 0, advanced: 0 },
+    };
+
+    const subjectTotals: SubjectCounts = {
+      bio: 0, earth: 0, chem: 0, phys: 0, comm: 0
     };
 
     const { metadata, answerKey } = config;
@@ -184,88 +184,72 @@ export async function POST(req: NextRequest) {
       } else {
         isCorrect = (studentAnswer === correctAnswer);
       }
+      
+      // [집계] 과목별 전체 문항 수
+      if (subjectTotals[meta.subject] !== undefined) {
+        subjectTotals[meta.subject]!++;
+      } else {
+        // 혹시 정의되지 않은 과목이 들어오면 초기화 후 증가
+        subjectTotals[meta.subject] = 1;
+        if (!scores[meta.subject]) scores[meta.subject] = { basic: 0, advanced: 0 };
+      }
 
       if (isCorrect) {
         totalCorrect++;
-        
-        // [고등] 배점 합산
         if (currentTestType === 'high' && meta.point) {
           totalScore += meta.point;
         }
 
-        // [중등] 난이도/과목별 통계 (기존 로직 유지)
-        if (currentTestType === 'middle') {
-          // 중등은 과목 코드가 정확히 일치하므로 scores 집계 가능
-          if (meta.difficulty === 'basic') {
-            basicCorrect++;
-            if (scores[meta.subject]) scores[meta.subject].basic++;
-          } else {
-            advancedCorrect++;
-            if (scores[meta.subject]) scores[meta.subject].advanced++;
-          }
+        const diff = meta.difficulty || 'basic';
+        if (diff === 'basic') {
+          basicCorrect++;
+          if (scores[meta.subject]) scores[meta.subject]!.basic++;
+        } else {
+          advancedCorrect++;
+          if (scores[meta.subject]) scores[meta.subject]!.advanced++;
         }
       }
     }
 
-    // 4. 결과 판정 (반 배정 / 등급 산출)
+    // 4. 결과 판정
     let assignedClass = '';
     let isExceptionCase = false;
-    let resultGrade: number | null = null; // 고등용
+    let resultGrade: number | null = null;
 
     if (currentTestType === 'middle') {
-      // ----------------------------------------------------
-      // 중등 과정: 기존 로직 그대로 유지
-      // ----------------------------------------------------
       if (advancedCorrect >= 10 && basicCorrect < 19) {
         assignedClass = '기본반';
         isExceptionCase = true;
-      } 
-      else if (basicCorrect >= 19) {
+      } else if (basicCorrect >= 19) {
         assignedClass = '심화반';
-      }
-      else {
+      } else {
         assignedClass = '기본반';
       }
     } else {
-      // ----------------------------------------------------
-      // 고등 과정: 등급컷 적용
-      // ----------------------------------------------------
-      assignedClass = '통합과학반'; // 고등은 고정 반 이름 (혹은 필요시 수정)
+      assignedClass = '통합과학반';
       if (config.gradeCutoffs) {
-        // 점수 내림차순 정렬된 컷오프에서 내 점수보다 작거나 같은 컷 찾기
-        // 예: 44점 1등급, 40점 2등급... 내 점수 42점 -> 40점(2등급)에 걸림?
-        // 아니요, 등급컷은 "이 점수 이상이면 해당 등급"입니다.
-        // 예: 44점 이상 -> 1등급. 43점 -> 2등급.
-        
         const cutoff = config.gradeCutoffs.find(c => totalScore >= c.score);
-        resultGrade = cutoff ? cutoff.grade : 9; // 컷오프에 없으면 9등급
+        resultGrade = cutoff ? cutoff.grade : 9;
       }
     }
     
     // 5. DB 저장
     const submissionTimestamp = new Date().toISOString(); 
-
     const dbData = {
-      testType: currentTestType, // [추가] 테스트 타입 저장
+      testType: currentTestType,
       studentName: studentName || '익명',
       school: school || '미기입',
       grade: grade || '미기입',
       studentAnswers: JSON.stringify(studentAnswers),
-      
-      // 공통 필드
       totalCorrect,
       assignedClass,
-      
-      // 중등용 필드
       basicCorrect,
       advancedCorrect,
-      scores,
+      scores,          // 과목별 정답 상세
+      subjectTotals,   // 과목별 전체 문항 수
       isExceptionCase,
-      
-      // 고등용 필드
       totalScore,
       resultGrade,
-      
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     
@@ -274,11 +258,9 @@ export async function POST(req: NextRequest) {
       createdAt: submissionTimestamp,
     };
 
-    // 6. 저장 및 알림
     await db.collection('testResults').add(dbData);
     await sendSlackNotification(clientResultData); 
 
-    // 7. 응답
     return NextResponse.json({ 
       message: 'Test submitted successfully!', 
       resultData: clientResultData 
@@ -286,10 +268,6 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error('Error submitting test:', error);
-    if (error instanceof Error) {
-      console.error(error.message);
-      console.error(error.stack);
-    }
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
