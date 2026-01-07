@@ -409,3 +409,51 @@
 .incorrectRow .resultCell {
   color: var(--danger-color);
 }
+
+/* 과정 선택 카드 스타일 */
+.selectionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.selectionCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  min-width: 200px;
+}
+.selectionCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-color: var(--primary-color);
+}
+
+/* 모름 체크박스 스타일 */
+.answerInputGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.unknownLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+}

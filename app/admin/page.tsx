@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styles from './Admin.module.css'; 
 import AdminClientPage from './AdminClientPage'; 
 
+export const dynamic = 'force-dynamic';
 // [수정] createdAt -> createdAtMillis, scores 추가
 interface TestResultSummary {
   id: string;
