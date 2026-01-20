@@ -15,7 +15,7 @@ interface TestResultSummary {
   school: string;
   grade: string;
   totalCorrect: number;
-  assignedClass: '기본반' | '심화반';
+  assignedClass: string;
   isExceptionCase: boolean;
   createdAtMillis: number | null; // [수정]
   studentAnswers: string;
